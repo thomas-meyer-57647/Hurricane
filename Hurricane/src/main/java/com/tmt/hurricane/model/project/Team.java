@@ -12,9 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import com.tmt.hurricane.model.user.User;
+import com.tmt.hurricane.user.model.User;
 
 /**
  * This class describes a team of a project
@@ -49,6 +50,7 @@ public class Team {
     private User deleted_by;														// the user who has this deleted
     private LocalDateTime deleted_at;												// the date when the user has this deleted
 
+    @Indexed
 	private String name;															// the team name
 	private List<TeamMember> teamMembers = new ArrayList<TeamMember>();				// the team members of the team
 

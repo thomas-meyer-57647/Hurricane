@@ -5,7 +5,7 @@ package com.tmt.hurricane.helper.database.model;
  * @author    	Thomas Meyer
  * @copyright 	Copyright (C) 2020 Thomas Meyer. License see license.txt
  * @package     database
- * @version		0.1.2
+ * @version		0.1.3
  --------------------------------------------------------------------------------*/
 import java.util.Objects;
 
@@ -22,7 +22,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class DatabaseSequence {
 
     @Id
-    private String id;									// id
+    private String id;									// the sequence name
     private long sequence;								// the auto-incremented sequence
 
     /**

@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### VISUAL PARADIGM ###
+doc/*.vpp.*
+
 ### STS ###
 .apt_generated
 .classpath

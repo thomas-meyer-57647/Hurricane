@@ -14,7 +14,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.tmt.hurricane.model.user.User;
+import com.tmt.hurricane.user.model.User;
 
 /**
  * This class describes a job within the team
@@ -45,23 +45,10 @@ public class Job {
     private Payment payment;														// the payment
 
 	public Job(
-			long id, 
-			User created_by, 
-			LocalDateTime created_at, 
-			User updated_by, 
-			LocalDateTime updated_at,
-			User deleted_by, 
-			LocalDateTime deleted_at, 
 			String title, 
 			Payment payment) {
 		super();
-		this.id = id;
-		this.created_by = created_by;
-		this.created_at = created_at;
-		this.updated_by = updated_by;
-		this.updated_at = updated_at;
-		this.deleted_by = deleted_by;
-		this.deleted_at = deleted_at;
+		
 		this.title = title;
 		this.payment = payment;
 	}

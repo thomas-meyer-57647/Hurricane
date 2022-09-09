@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import com.tmt.hurricane.model.communication.Communication;
 import com.tmt.hurricane.model.global.Downtime;
 import com.tmt.hurricane.model.global.Reason;
+import com.tmt.hurricane.user.model.User;
 
 /**
  * this is the downtime for a spezified User

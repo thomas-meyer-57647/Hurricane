@@ -14,12 +14,13 @@ import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.tmt.hurricane.model.communication.Communication;
 import com.tmt.hurricane.model.global.ResubmittableNote;
-import com.tmt.hurricane.model.user.User;
+import com.tmt.hurricane.user.model.User;
 
 /**
  * a company description
@@ -69,6 +70,7 @@ public class Company {
     private User deleted_by;																// the user who has this deleted
     private LocalDateTime deleted_at;														// the date when the user has this deleted
 
+    @Indexed(unique = true)
     private String name;																	// name of the company
     private List<Communication>	communications = new ArrayList<Communication>();			// list of communications
  

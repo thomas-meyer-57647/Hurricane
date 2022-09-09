@@ -17,13 +17,14 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.tmt.hurricane.model.company.Company;
 import com.tmt.hurricane.model.document.Documentary;
 import com.tmt.hurricane.model.global.TimeSpan;
-import com.tmt.hurricane.model.user.User;
+import com.tmt.hurricane.user.model.User;
 
 /**
  * this class describe a project
@@ -50,6 +51,7 @@ public class Project {
     private User deleted_by;														// the user who has this deleted
     private LocalDateTime deleted_at;												// the date when the user has this deleted
 
+    @Indexed
     private String name;															// the name of the project
  
     @DBRef

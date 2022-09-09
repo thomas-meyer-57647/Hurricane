@@ -9,13 +9,16 @@ package com.tmt.hurricane.model.fields;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.tmt.hurricane.model.user.User;
+import com.tmt.hurricane.user.model.User;
 
 /**
  *  a technical description of a field
@@ -52,6 +55,7 @@ public class FieldDescription {
     private long id;								// the id of the user
 
     @DBRef
+    @NotNull
     private User created_by;						// the creator
     private LocalDateTime created_at;				// the created date
 
@@ -63,18 +67,18 @@ public class FieldDescription {
     private User deleted_by;						// the user who has this deleted
     private LocalDateTime deleted_at;				// the date when the user has this deleted
 
-    @Indexed(unique = true)
+    @Indexed
+    @NotBlank
 	private String name;							// the name of the field
+    
+    @NotNull
 	private EFieldType fieldType;					// the kind of Field
+    
+    @NotBlank
 	private String options;							// the options of the field
-	
-	public 
-		FieldDescription(String classname, 
-		String name, 
-		EFieldType fieldType, 
-		String options) {
+
+	public FieldDescription(@NotBlank String name, @NotNull EFieldType fieldType, String options) {
 		super();
-		
 		this.name = name;
 		this.fieldType = fieldType;
 		this.options = options;
@@ -162,7 +166,7 @@ public class FieldDescription {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(fieldType, name, options);
+		return Objects.hash(fieldType, id, name, options);
 	}
 
 	@Override
@@ -174,7 +178,7 @@ public class FieldDescription {
 		if (getClass() != obj.getClass())
 			return false;
 		FieldDescription other = (FieldDescription) obj;
-		return fieldType == other.fieldType && Objects.equals(name, other.name)
+		return fieldType == other.fieldType && id == other.id && Objects.equals(name, other.name)
 				&& Objects.equals(options, other.options);
 	}
 

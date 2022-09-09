@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import com.tmt.hurricane.model.global.AvailableTime;
+import com.tmt.hurricane.user.model.User;
 
 /**
  * work time for a person according to employment contract

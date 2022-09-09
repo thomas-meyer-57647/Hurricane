@@ -5,7 +5,7 @@ import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import com.tmt.hurricane.model.global.AvailableTime;
-import com.tmt.hurricane.model.user.User;
+import com.tmt.hurricane.user.model.User;
 
 /*-------------------------------------------------------------------------------
  * Hurrican
@@ -60,6 +60,7 @@ public class Communication {
 	private String					commication;
 	private	Address					address;
 	private String					additonalNote;
+	private boolean					prefored;
 	
 	public Communication(
 			ECommunicationType tpe, 

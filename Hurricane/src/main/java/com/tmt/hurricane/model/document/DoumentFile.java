@@ -17,7 +17,7 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import com.tmt.hurricane.model.global.UserNote;
-import com.tmt.hurricane.model.user.User;
+import com.tmt.hurricane.user.model.User;
 
 /**
  * This class gives information about the uploaded or updated document

@@ -26,7 +26,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  *	
  *	private String values;							the value(s) for this field
  */
-@Document(collection="field_value")
+@Document(collection="field_values")
 public class FieldValue {
 
 	@Transient
@@ -39,7 +39,6 @@ public class FieldValue {
  	private long refID;								// the reference id
  	
 	@DBRef
-	@Indexed
 	private CustomField customField;				// the associated custom field
 	
 	private String values;							// the value(s) for this field

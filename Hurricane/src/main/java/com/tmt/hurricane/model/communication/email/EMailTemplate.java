@@ -8,41 +8,46 @@ package com.tmt.hurricane.model.communication.email;
  --------------------------------------------------------------------------------*/
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Language;
 
-import com.tmt.hurricane.model.user.User;
+import com.tmt.hurricane.model.global.LanguageString;
+import com.tmt.hurricane.user.model.User;
 
 
 /**
  * This class describes a template for an EMail
  * 
  * @Id
- * long id;							the id of the email template
+ * long id;																the id of the email template
  *
  * @DBRef
- * User created_by;					the creator
- * LocalDateTime created_at;		the created date
+ * User created_by;														the creator
+ * LocalDateTime created_at;											the created date
  *
  * @DBRef
- * User updated_by;					the creator
- * LocalDateTime updated_at;		the update
+ * User updated_by;														the creator
+ * LocalDateTime updated_at;											the update
  *
  * @DBRef
- * User deleted_by;					the user who has this deleted
- * LocalDateTime deleted_at;		the date when the user has this deleted
+ * User deleted_by;														the user who has this deleted
+ * LocalDateTime deleted_at;											the date when the user has this deleted
  *
- * @Language
- * String languageCode;				an ISO 639 2-letter language code
+ * @Indexed
+ * String name;															the name of the templace	
+ * 
+ * List<LanguageString> template = new ArrayList<LanguageString>();		the list of email template
  *   
- * EEmailUsing using;				Specifies when this email template should be used 
- *
- * String template;					the email template
+ * EEmailUsing using;													Specifies when this email template should be used 
  */
 @Document(collection="email_template")
 public class EMailTemplate {
@@ -65,21 +70,23 @@ public class EMailTemplate {
     private User deleted_by;					// the user who has this deleted
     private LocalDateTime deleted_at;			// the date when the user has this deleted
 
-    @Language
-    private String languageCode;				// an ISO 639 2-letter language code
+    @Indexed(unique = true)
+    @NotBlank
+    private String name;						// the name of the templace																// name of the company
+    
+    List<LanguageString> template = new ArrayList<LanguageString>();	// the list of email template
     
     private EEmailUsing using;					// Specifies when this email template should be used 
 
-    private String template;					// the email template
-
 	public EMailTemplate(
-			String languageCode, 
-			EEmailUsing using, 
-			String template) {
+			@NotBlank String name, 
+			List<LanguageString> template, 
+			EEmailUsing using) {
 		super();
-		this.languageCode = languageCode;
-		this.using = using;
+		
+		this.name = name;
 		this.template = template;
+		this.using = using;
 	}
 
 	public long getId() {
@@ -118,7 +125,7 @@ public class EMailTemplate {
 		return updated_at;
 	}
 
-	public void setUpdated_at(LocalDateTime updated_at) {
+	public void setUpdatedAt(LocalDateTime updated_at) {
 		this.updated_at = updated_at;
 	}
 
@@ -138,12 +145,20 @@ public class EMailTemplate {
 		this.deleted_at = deleted_at;
 	}
 
-	public String getLanguageCode() {
-		return languageCode;
+	public String getName() {
+		return name;
 	}
 
-	public void setLanguageCode(String languageCode) {
-		this.languageCode = languageCode;
+	public void setName(@NotBlank String name) {
+		this.name = name;
+	}
+	
+	public List<LanguageString> getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(List<LanguageString> template) {
+		this.template = template;
 	}
 
 	public EEmailUsing getUsing() {
@@ -154,18 +169,9 @@ public class EMailTemplate {
 		this.using = using;
 	}
 
-	public String getTemplate() {
-		return template;
-	}
-
-	public void setTemplate(String template) {
-		this.template = template;
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(created_at, created_by, deleted_at, deleted_by, id, languageCode, template, updated_at,
-				updated_by, using);
+		return Objects.hash(name, template, using);
 	}
 
 	@Override
@@ -177,19 +183,13 @@ public class EMailTemplate {
 		if (getClass() != obj.getClass())
 			return false;
 		EMailTemplate other = (EMailTemplate) obj;
-		return Objects.equals(created_at, other.created_at) && Objects.equals(created_by, other.created_by)
-				&& Objects.equals(deleted_at, other.deleted_at) && Objects.equals(deleted_by, other.deleted_by)
-				&& id == other.id && Objects.equals(languageCode, other.languageCode)
-				&& Objects.equals(template, other.template) && Objects.equals(updated_at, other.updated_at)
-				&& Objects.equals(updated_by, other.updated_by) && using == other.using;
+		return Objects.equals(name, other.name) && Objects.equals(template, other.template) && using == other.using;
 	}
 
 	@Override
 	public String toString() {
 		return "EMailTemplate [id=" + id + ", created_by=" + created_by + ", created_at=" + created_at + ", updated_by="
 				+ updated_by + ", updated_at=" + updated_at + ", deleted_by=" + deleted_by + ", deleted_at="
-				+ deleted_at + ", languageCode=" + languageCode + ", using=" + using + ", template=" + template + "]";
+				+ deleted_at + ", name=" + name + ", template=" + template + ", using=" + using + "]";
 	}
-
-    
 }

@@ -15,7 +15,7 @@ import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import com.tmt.hurricane.model.jobs.Job;
-import com.tmt.hurricane.model.user.User;
+import com.tmt.hurricane.user.model.User;
 
 /**
  * this class describes the task of a person within the team

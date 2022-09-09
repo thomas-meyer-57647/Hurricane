@@ -1,4 +1,4 @@
-package com.tmt.hurricane.model.user;
+package com.tmt.hurricane.user.model;
 /*-------------------------------------------------------------------------------
  * Hurrican
  *-------------------------------------------------------------------------------
@@ -24,6 +24,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.tmt.hurricane.model.communication.Communication;
 import com.tmt.hurricane.model.company.Company;
 import com.tmt.hurricane.model.jobs.Job;
+import com.tmt.hurricane.model.user.UserDowntime;
+import com.tmt.hurricane.model.user.WorkTime;
 
 /**
  * store object for the user information
@@ -35,14 +37,17 @@ import com.tmt.hurricane.model.jobs.Job;
  *  long id;																the id of the user
  *
  *  @DBRef
+ *  @Indexed
  *  User created_by;														the creator
  *  LocalDateTime created_at;												the created date
  *
  *  @DBRef
+ *  @Indexed
  *  User updated_by;														the creator
  *  LocalDateTime updated_at;												the update
  *
  *  @DBRef
+ *  @Indexed
  *  User deleted_by;														the user who has this deleted
  *  LocalDateTime deleted_at;												the date when the user has this deleted
  *
@@ -152,51 +157,51 @@ public class User {
 		this.id = id;
 	}
 
-	public User getCreated_by() {
+	public User getCreatedBy() {
 		return created_by;
 	}
 
-	public void setCreated_by(User created_by) {
+	public void setCreatedBy(User created_by) {
 		this.created_by = created_by;
 	}
 
-	public LocalDateTime getCreated_at() {
+	public LocalDateTime getCreatedAt() {
 		return created_at;
 	}
 
-	public void setCreated_at(LocalDateTime created_at) {
+	public void setCreatedAt(LocalDateTime created_at) {
 		this.created_at = created_at;
 	}
 
-	public User getUpdated_by() {
+	public User getUpdatedBy() {
 		return updated_by;
 	}
 
-	public void setUpdated_by(User updated_by) {
+	public void setUpdatedBy(User updated_by) {
 		this.updated_by = updated_by;
 	}
 
-	public LocalDateTime getUpdated_at() {
+	public LocalDateTime getUpdatedAt() {
 		return updated_at;
 	}
 
-	public void setUpdated_at(LocalDateTime updated_at) {
+	public void setUpdatedAt(LocalDateTime updated_at) {
 		this.updated_at = updated_at;
 	}
 
-	public User getDeleted_by() {
+	public User getDeletedBy() {
 		return deleted_by;
 	}
 
-	public void setDeleted_by(User deleted_by) {
+	public void setDeletedBy(User deleted_by) {
 		this.deleted_by = deleted_by;
 	}
 
-	public LocalDateTime getDeleted_at() {
+	public LocalDateTime getDeletedAt() {
 		return deleted_at;
 	}
 
-	public void setDeleted_at(LocalDateTime deleted_at) {
+	public void setDeletedAt(LocalDateTime deleted_at) {
 		this.deleted_at = deleted_at;
 	}
 

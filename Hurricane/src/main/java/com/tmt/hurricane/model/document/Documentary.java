@@ -13,7 +13,7 @@ import java.util.Objects;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import com.tmt.hurricane.model.user.User;
+import com.tmt.hurricane.user.model.User;
 
 /**
  * This class describes a file in which there can be several documents

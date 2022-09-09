@@ -9,7 +9,7 @@ package com.tmt.hurricane.model.global;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import com.tmt.hurricane.model.user.User;
+import com.tmt.hurricane.user.model.User;
 
 /**
  * this is a resubmittable note

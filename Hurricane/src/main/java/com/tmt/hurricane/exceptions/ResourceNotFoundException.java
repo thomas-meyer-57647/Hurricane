@@ -3,8 +3,8 @@ package com.tmt.hurricane.exceptions;
  * Hurrican
  *-------------------------------------------------------------------------------
  * @author    	Thomas Meyer
- * @copyright 	Copyright (C) 2020 Thomas Meyer. License see license.txt
- * @version		0.0.1
+ * @copyright 	Copyright (C) 2022 Thomas Meyer. License see license.txt
+ * @version		0.1.4
  --------------------------------------------------------------------------------*/
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

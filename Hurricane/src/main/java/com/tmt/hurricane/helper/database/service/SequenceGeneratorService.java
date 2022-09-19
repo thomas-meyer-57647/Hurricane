@@ -3,9 +3,9 @@ package com.tmt.hurricane.helper.database.service;
  * Hurrican
  *-------------------------------------------------------------------------------
  * @author    	Thomas Meyer
- * @copyright 	Copyright (C) 2020 Thomas Meyer. License see license.txt
+ * @copyright 	Copyright (C) 2022 Thomas Meyer. License see license.txt
  * @package     database
- * @version		0.1.3
+ * @version		0.1.4
  --------------------------------------------------------------------------------*/
 import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
 import static org.springframework.data.mongodb.core.query.Criteria.where;

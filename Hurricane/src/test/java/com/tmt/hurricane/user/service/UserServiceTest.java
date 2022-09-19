@@ -3,8 +3,8 @@ package com.tmt.hurricane.user.service;
  * Hurrican
  *-------------------------------------------------------------------------------
  * @author    	Thomas Meyer
- * @copyright 	Copyright (C) 2020 Thomas Meyer. License see license.txt
- * @version		0.0.1
+ * @copyright 	Copyright (C) 2022 Thomas Meyer. License see license.txt
+ * @version		0.1.4
  --------------------------------------------------------------------------------*/
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +22,37 @@ import com.tmt.hurricane.user.model.User;
 
 /**
  * test function for the user service
- */
+ * 
+ * void testCreateUserWithMinimalistValidData()										test create User with minimalst valid data
+ * void testCreateUserWithCreator() 												test create User with creator 
+ * void testCreateUserWithNullUserData()											test create User with null user data should throw NotDefinedException  
+ * void testCreateUserWithNotExistsCreatorShouldThrowResourceNotFound() 			test create User with not exists create should throw RessourceNotFound  
+ * void testCreateUserWithDuplicatedEmailAdressShouldThrowResourNotFound()			test create User with duplicated email adress should throw RessourceNotFound  
+ * 
+ * void testUpdateUserWithValidData() 												test update User with valid data
+ * void testUpdateUserWithNullUpdaterShouldThrowNotDefinedException() 				test update User with null Updater should throw NotDefinedException
+ * void testUpdateUserWithNullNewUserDataShouldThrowNotDefinedException() 			test update User with null new user daata should throw NotDefinedException
+ * void testUpdateUserWithNotExistsUserShouldThrowResourceNotFoundException() 		test update User with not exists user should throw ResourceNotFoundException
+ * void testUpdateUserWithNotExistsCreatorShouldThrowResourceNotFoundException() 	test update User with not exists creater should throw ResourceNotFoundException
+ * void testUpdateUserWithExistsUserDataEmailShouldThrowDuplicateException() 		test update User with exists user data email throw DuplicateException
+ * 
+ * void testValidDeleteUser() 														test valid delete user
+ * void testDeleteUserWithNullDeleterShouldThrowNotDefinedException() 				test Delete user with null deleter should throw NotDefinedException
+ * void testDeleteUserWithNotExistsDeleterShouldThrowResourceNotFoundException() 	test Delete user with not exists deleter should throw ResourceNotFoundException
+ * void testDeleteUserWithNotExistsUserIDShouldThrowResourceNotFoundException() 	test Delete user with not exists user id should throw ResourceNotFoundException
+ * 
+ * void testValidUndeleteUser() 													test valid undelete user
+ * void testUndeleteUserWithInvalidIndexShouldThrowResourceNotFound() 				test undelete user with invalid Index Should Throw ResourceNotFound
+ * 
+ * void testValidRemoveUser() 														test valid removed user
+ * void testRemovedUserWithInvalidIndexShouldThrowResourceNotFoundException() 		test removed user with invalid index should throw ResourceNotFoundException
+ * 
+ * void testFindUserByEmail() 														test findUserByEmail 
+ * void testFindNotAUserByWrongEmail() 												test find not a user by wrong email 
+ * 
+ * void testExistsUserByEmail()														test existsUserByEmail 
+ * void testExistsNotAUserByWrongEmail()											test exists not a user by wrong email 
+ */ 
 @SpringBootTest
 class UserServiceTest {
 	
@@ -68,7 +98,7 @@ class UserServiceTest {
 		// clean up
 		userService.removeUser(foundUser.get().getId());
 	}
-	
+
 	/**
 	 * test create User with creator 
 	 * @throws ResourceNotFoundException 
@@ -136,14 +166,14 @@ class UserServiceTest {
 	 */	
 	@Test
 	void testCreateUserWithNullUserData() throws ResourceNotFoundException, NotDefinedException {
-		assertThrows(NotDefinedException.class, () -> userService.createUser(null, null), "testCreateUserWithNullUserData(): Create User with null user data didn't throw NotDefinedException");
+		assertThrows(NullPointerException.class, () -> userService.createUser(null, null), "testCreateUserWithNullUserData(): Create User with null user data didn't throw NotDefinedException");
 	}
 	
 	/**
 	 * test create User with not exists create should throw RessourceNotFound  
 	 * @throws ResourceNotFoundException 
 	 * @throws NotDefinedException 
-	 */	
+	 */
 	@Test
 	void testCreateUserWithNotExistsCreatorShouldThrowResourceNotFound() throws ResourceNotFoundException, NotDefinedException {
 		// not exists creator
@@ -246,7 +276,7 @@ class UserServiceTest {
 	 * @throws ResourceNotFoundException 
 	 * @throws NotDefinedException 
 	 * @throws DuplicateException 
-	 */	
+	 */
 	@Test
 	void testUpdateUserWithValidData() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
 		// create user
@@ -319,7 +349,7 @@ class UserServiceTest {
 		userService.removeUser(foundCreator.get().getId());
 		userService.removeUser(foundUser.get().getId());
 	}
-
+	
 	/**
 	 * test update User with null Updater should throw NotDefinedException
 	 * 
@@ -360,7 +390,7 @@ class UserServiceTest {
 				updatedPassword					// password
 		);
 
-		assertThrows(NotDefinedException.class, () -> userService.updateUser(null, foundUser.get().getId(), updatedUserData), "testUpdateUserWithNullUpdaterShouldThrowNotDefinedException(): A NotDefineException was not thrown when Creater is null");
+		assertThrows(NullPointerException.class, () -> userService.updateUser(null, foundUser.get().getId(), updatedUserData), "testUpdateUserWithNullUpdaterShouldThrowNotDefinedException(): A NotDefineException was not thrown when Creater is null");
 		
 		// clean up
 		userService.removeUser(foundUser.get().getId());		
@@ -412,7 +442,7 @@ class UserServiceTest {
 		assertTrue( foundCreator.isPresent(), "testUpdateUserWithNullNewUserDataShouldThrowNotDefinedException(): Creator (" + creator + ") not stored");
 		
 		// update user
-		assertThrows(NotDefinedException.class, () -> userService.updateUser(foundCreator.get(), foundUser.get().getId(), null), "testUpdateUserWithNullNewUserDataShouldThrowNotDefinedException(): A NotDefineException was not thrown when user data is null");
+		assertThrows(NullPointerException.class, () -> userService.updateUser(foundCreator.get(), foundUser.get().getId(), null), "testUpdateUserWithNullNewUserDataShouldThrowNotDefinedException(): A NotDefineException was not thrown when user data is null");
 		
 		// clean up
 		userService.removeUser(foundCreator.get().getId());
@@ -744,12 +774,12 @@ class UserServiceTest {
 		assertTrue( foundUser.isPresent(), "testDeleteUserWithNullDeleterShouldThrowNotDefinedException(): User (" + user + ") not stored");
 
 		// test
-		assertThrows(NotDefinedException.class, () -> userService.deleteUser(null, foundUser.get().getId()), "testDeleteUserWithNullDeleterShouldThrowNotDefinedException(): A NotDefinedException was not thrown when deleter ist null");
+		assertThrows(NullPointerException.class, () -> userService.deleteUser(null, foundUser.get().getId()), "testDeleteUserWithNullDeleterShouldThrowNotDefinedException(): A NotDefinedException was not thrown when deleter ist null");
 
 		// clean up
 		userService.removeUser(foundUser.get().getId());		
 	}
-	
+
 	/**
 	 * test Delete user with not exists deleter should throw ResourceNotFoundException
 	 * 
@@ -989,41 +1019,6 @@ class UserServiceTest {
 	}
 	
 	/**
-	 * test valid removed user
-	 * 
-	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
-	 * @throws DuplicateException 
-	 */	
-	@Test
-	void testValidRemoveUser() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
-		// create user
-		String firstname = "firstname";
-		String lastname = "lastname";
-		String email = "email@email.com";
-		String password = "password";
-		
-		User user = new User(
-				firstname,				// password 
-				lastname, 				// lastname
-				email, 					// email
-				password				// password
-				);
-		
-		User createdUser = userService.createUser(null, user);
-		Optional<User> foundUser = userService.findUserById(createdUser.getId());
-		
-		assertTrue( foundUser.isPresent(), "testValidRemoveUser(): User (" + user + ") not stored");
-
-		// test
-		userService.removeUser(foundUser.get().getId());
-		
-		Optional<User> foundRemovedUser = userService.findUserById(foundUser.get().getId());
-		
-		assertFalse( foundRemovedUser.isPresent(), "testValidRemoveUser(): User was not removed");
-	}
-	
-	/**
 	 * test removed user with invalid index should throw ResourceNotFoundException
 	 * 
 	 * @throws ResourceNotFoundException 
@@ -1056,7 +1051,115 @@ class UserServiceTest {
 		// clean up
 		userService.removeUser(foundUser.get().getId());
 	}
+	
+	/**
+	 * test remove user and loading data
+	 * 
+	 * @throws ResourceNotFoundException 
+	 * @throws NotDefinedException 
+	 * @throws DuplicateException 
+	 */	
+	@Test
+	void testRemoveUserAndLoadingData() throws ResourceNotFoundException, DuplicateException {
+		// create user 
+		String creator_firstname = "creators firstname";
+		String creator_lastname = "creators lastname";
+		String creator_email = "email@email.com";
+		String creator_password = "creators password";
+		
+		User creator = new User(
+				creator_firstname,				// password 
+				creator_lastname, 				// lastname
+				creator_email, 					// email
+				creator_password				// password
+				);
+		
+		User createdCreator = userService.createUser(null, creator);
+		Optional<User> foundCreator = userService.findUserById(createdCreator.getId());
+		
+		assertTrue( foundCreator.isPresent(), "testRemoveUserAndLoadingData(): Creator (" + creator + ") not stored");
 
+		// create user with creator
+		String user_firstname = "user firstname";
+		String user_lastname = "user lastname";
+		String user_email = "user_email@email.com";
+		String user_password = "user password";
+		
+		User user = new User(
+				user_firstname,				// password 
+				user_lastname, 				// lastname
+				user_email, 				// email
+				user_password				// password
+				);
+
+		User createdUser = userService.createUser(createdCreator, user);
+		Optional<User> foundUser = userService.findUserById(createdUser.getId());
+
+		assertTrue( foundUser.isPresent(), "testRemoveUserAndLoadingData(): User (" + user + ") not stored");
+		
+		// test
+		userService.removeUser(createdCreator.getId());;
+		Optional<User> loaddUser = userService.findUserById(createdUser.getId());
+		
+		assertNull(loaddUser.get().getCreatedBy());
+		
+		// clean up
+		userService.removeUser(foundUser.get().getId());
+	}
+	
+/*	
+	@Test
+	void testRemoveUserAndLoadingData() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+		// create user 
+		String creator_firstname = "creators firstname";
+		String creator_lastname = "creators lastname";
+		String creator_email = "email@email.com";
+		String creator_password = "creators password";
+		
+		User creator = new User(
+				creator_firstname,				// password 
+				creator_lastname, 				// lastname
+				creator_email, 					// email
+				creator_password				// password
+				);
+		
+		User createdCreator = userService.createUser(null, creator);
+		Optional<User> foundCreator = userService.findUserById(createdCreator.getId());
+		
+		assertTrue( foundCreator.isPresent(), "testRemoveUserAndLoadingData(): Creator (" + creator + ") not stored");
+
+		// create user with creator
+		String user_firstname = "user firstname";
+		String user_lastname = "user lastname";
+		String user_email = "user_email@email.com";
+		String user_password = "user password";
+		
+		User user = new User(
+				user_firstname,				// password 
+				user_lastname, 				// lastname
+				user_email, 				// email
+				user_password				// password
+				);
+
+		User createdUser = userService.createUser(createdCreator, user);
+		Optional<User> foundUser = userService.findUserById(createdUser.getId());
+
+		assertTrue( foundUser.isPresent(), "testRemoveUserAndLoadingData(): User (" + user + ") not stored");
+
+		// remove creator
+		userService.removeUser(createdCreator.getId());;
+		
+		// get user
+		foundUser = userService.findUserById(createdUser.getId());
+		
+		assertTrue( foundUser.isPresent(), "testRemoveUserAndLoadingData(): User (" + user + ") not found");
+
+		assertNull(user.getCreatedBy());
+		
+		// clean up
+		userService.removeUser(foundUser.get().getId());
+	}
+*/	
 	/**
 	 * test findUserByEmail 
 	 * 
@@ -1085,32 +1188,197 @@ class UserServiceTest {
 		assertTrue( foundUser.isPresent(), "testFindUserByEmail(): User (" + user + ") not stored");
 
 		// test 1
-		String eamil1 = "email@email.com";
-		List<User> users1 = userService.findUserByEmail(eamil1);
+		String email1 = "email@email.com";
+		List<User> users1 = userService.findUserByEmail(email1);
 		
-		assertEquals(1, users1.size(), "testFindUserByEmail(): Users (" + users1 + ") not found a user with email: " + eamil1 );
+		assertEquals(1, users1.size(), "testFindUserByEmail(): Users (" + users1 + ") not found a user with email: " + email1 );
 		
 		// test 2
-		String eamil2 = "Email@email.com";
-		List<User> users2 = userService.findUserByEmail(eamil2);
+		String email2 = "Email@email.com";
+		List<User> users2 = userService.findUserByEmail(email2);
 		
-		assertEquals(1, users2.size(), "testFindUserByEmail(): Users (" + users2 + ") not found a user with email: " + eamil2 );
+		assertEquals(1, users2.size(), "testFindUserByEmail(): Users (" + users2 + ") not found a user with email: " + email2 );
 
 		// test 3
-		String eamil3 = "EMAIL@EMAIL.COM";
-		List<User> users3 = userService.findUserByEmail(eamil3);
+		String email3 = "EMAIL@EMAIL.COM";
+		List<User> users3 = userService.findUserByEmail(email3);
 		
-		assertEquals(1, users3.size(), "testFindUserByEmail(): Users (" + users3 + ") not found a user with email: " + eamil3 );
+		assertEquals(1, users3.size(), "testFindUserByEmail(): Users (" + users3 + ") not found a user with email: " + email3 );
 
 		// test 4
-		String eamil4 = "EMail2@EMAIL.COM";
-		List<User> users4 = userService.findUserByEmail(eamil4);
+		String email4 = "EMail2@EMAIL.COM";
+		List<User> users4 = userService.findUserByEmail(email4);
 		
-		assertEquals(0, users4.size(), "testFindUserByEmail(): Users (" + users4 + ") user found with email: " + eamil4 );
+		assertEquals(0, users4.size(), "testFindUserByEmail(): Users (" + users4 + ") user found with email: " + email4 );
+
+		// test 5
+		String email5 = " EMail2@EMAIL.COM";
+		List<User> users5 = userService.findUserByEmail(email5);
+		
+		assertEquals(0, users5.size(), "testFindUserByEmail(): Users (" + users5 + ") user found with email: " + email5 );
+		
+		// test 6
+		String email6 = " EMail2@EMAIL.COM ";
+		List<User> users6 = userService.findUserByEmail(email6);
+		
+		assertEquals(0, users6.size(), "testFindUserByEmail(): Users (" + users6 + ") user found with email: " + email6 );
+		
+		// test 7
+		String email7 = " EMail2@EMAIL.COM ";
+		List<User> user7 = userService.findUserByEmail(email7);
+		
+		assertEquals(0, user7.size(), "testFindUserByEmail(): Users (" + user7 + ") user found with email: " + email7 );
 		
 		// clean up
 		userService.removeUser(foundUser.get().getId());
 	}
+	
+	/**
+	 * test find not a user by wrong email 
+	 * 
+	 * @throws ResourceNotFoundException 
+	 * @throws NotDefinedException 
+	 * @throws DuplicateException 
+	 */	
+	@Test
+	void testFindNotAUserByWrongEmail() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+		// create user
+		String firstname = "firstname";
+		String lastname = "lastname";
+		String email = "EMail@email.com";
+		String password = "password";
 		
+		User user = new User(
+				firstname,				// password 
+				lastname, 				// lastname
+				email, 					// email
+				password				// password
+				);
 		
+		User createdUser = userService.createUser(null, user);
+		Optional<User> foundUser = userService.findUserById(createdUser.getId());
+		
+		assertTrue( foundUser.isPresent(), "testFindNotAUserByWrongEmail(): User (" + user + ") not stored");
+
+		// test 
+		String other_email = "otheremail@email.com";
+		List<User> users = userService.findUserByEmail(other_email);
+		
+		assertEquals(0, users.size(), "testFindNotAUserByWrongEmail(): Users (" + users + ") found a user with email: " + other_email );
+		
+		// clean up
+		userService.removeUser(foundUser.get().getId());
+	}
+
+	/**
+	 * test existsUserByEmail 
+	 * 
+	 * @throws ResourceNotFoundException 
+	 * @throws NotDefinedException 
+	 * @throws DuplicateException 
+	 */	
+	@Test
+	void testExistsUserByEmail() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+		// create user
+		String firstname = "firstname";
+		String lastname = "lastname";
+		String email = "EMail@email.com";
+		String password = "password";
+		
+		User user = new User(
+				firstname,				// password 
+				lastname, 				// lastname
+				email, 					// email
+				password				// password
+				);
+		
+		User createdUser = userService.createUser(null, user);
+		Optional<User> foundUser = userService.findUserById(createdUser.getId());
+		
+		assertTrue( foundUser.isPresent(), "testExistsUserByEmail(): User (" + user + ") not stored");
+
+		// test 1
+		String email1 = "email@email.com";
+		boolean exists_user1 = userService.existsUserByEmail(email1);
+		
+		assertTrue(exists_user1, "testExistsUserByEmail(): Users (" + exists_user1 + ") not exists a user with email: " + email1 );
+		
+		// test 2
+		String email2 = "Email@email.com";
+		boolean exists_user2 = userService.existsUserByEmail(email2);
+		
+		assertTrue(exists_user2, "testExistsUserByEmail(): Users (" + exists_user2 + ") not exists a user with email: " + email2 );
+
+		// test 3
+		String email3 = "EMAIL@EMAIL.COM";
+		boolean exists_user3 = userService.existsUserByEmail(email3);
+		
+		assertTrue(exists_user3, "testExistsUserByEmail(): Users (" + exists_user3 + ") not exists a user with email: " + email3 );
+
+		// test 4
+		String email4 = "EMail@EMAIL.COM";
+		boolean exists_user4 = userService.existsUserByEmail(email4);
+		
+		assertTrue(exists_user4, "testExistsUserByEmail(): Users (" + exists_user4 + ") user exists with email: " + email4 );
+
+		// test 5
+		String email5 = " EMail@EMAIL.COM";
+		boolean exists_user5 = userService.existsUserByEmail(email5);
+		
+		assertTrue(exists_user5, "testExistsUserByEmail(): Users (" + exists_user5 + ") user exists with email: " + email5 );
+		
+		// test 6
+		String email6 = " EMail@EMAIL.COM ";
+		boolean exists_user6 = userService.existsUserByEmail(email6);
+		
+		assertTrue(exists_user6, "testExistsUserByEmail(): Users (" + exists_user6 + ") user exists with email: " + email6 );
+		
+		// test 7
+		String email7 = " EMail@EMAIL.COM ";
+		boolean exists_user7 = userService.existsUserByEmail(email7);
+		
+		assertTrue(exists_user7, "testExistsUserByEmail(): Users (" + exists_user7 + ") user exists with email: " + email7 );
+		
+		// clean up
+		userService.removeUser(foundUser.get().getId());
+	}
+	
+	/**
+	 * test exists not a user by wrong email 
+	 * 
+	 * @throws ResourceNotFoundException 
+	 * @throws NotDefinedException 
+	 * @throws DuplicateException 
+	 */	
+/*	
+	@Test
+	void testExistsNotAUserByWrongEmail() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+		// create user
+		String firstname = "firstname";
+		String lastname = "lastname";
+		String email = "EMail@email.com";
+		String password = "password";
+		
+		User user = new User(
+				firstname,				// password 
+				lastname, 				// lastname
+				email, 					// email
+				password				// password
+				);
+		
+		User createdUser = userService.createUser(null, user);
+		Optional<User> foundUser = userService.findUserById(createdUser.getId());
+		
+		assertTrue( foundUser.isPresent(), "testExistsNotAUserByWrongEmail(): User (" + user + ") not stored");
+
+		// test 
+		String other_email = "otheremail@email.com";
+		boolean exists_user = userService.existsUserByEmail(other_email);
+		
+		assertEquals(exists_user, "testExistsNotAUserByWrongEmail(): Users (" + exists_user + ") not exists a user with email: " + other_email );
+		
+		// clean up
+		userService.removeUser(foundUser.get().getId());
+	}	
+*/	
 }

@@ -3,27 +3,30 @@ package com.tmt.hurricane.user.service;
  * Hurrican
  *-------------------------------------------------------------------------------
  * @author    	Thomas Meyer
- * @copyright 	Copyright (C) 2020 Thomas Meyer. License see license.txt
- * @version		0.0.1
+ * @copyright 	Copyright (C) 2022 Thomas Meyer. License see license.txt
+ * @version		0.1.4
  --------------------------------------------------------------------------------*/
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Preconditions;
+import com.tmt.hurricane.country.service.CountryService;
 import com.tmt.hurricane.exceptions.DuplicateException;
 import com.tmt.hurricane.exceptions.NotDefinedException;
 import com.tmt.hurricane.exceptions.ResourceNotFoundException;
 import com.tmt.hurricane.helper.database.service.SequenceGeneratorService;
-import com.tmt.hurricane.model.fields.CustomField;
-import com.tmt.hurricane.model.fields.FieldDescription;
 import com.tmt.hurricane.services.field.FieldService;
 import com.tmt.hurricane.user.model.User;
 import com.tmt.hurricane.user.repository.UserRepository;
@@ -31,53 +34,24 @@ import com.tmt.hurricane.user.repository.UserRepository;
 /**
  * this is the service for the user management
  * 
- * User createUser(User creator, User user) throws ResourceNotFoundException 		
- * 
- * the creator <code>creator</code> create a new <code>user</code>. If <code>user</code> null this 
- * function return <code>ResourceNotFoundException</code>
- * 
- * final User updateUser(User updater, Long id, User user) throws ResourceNotFoundException
-
- * the <code>updater</code> updated the user with the ID <code>id</code> with the data of
- * <code>user</code>.If a <code>User</code> with the ID <code>id</code> not found this function will
- * be throw a ResourceNotFoundException
- * 
- * final User deleteUser(User deleter, long id) throws ResourceNotFoundException 
- * 
- * the <code>deleter</code> set the user with the ID <code>id</code> as deleted. This function will
- * be throw a ResourceNotFoundException if a User with the ID <code>id</code> not exists
- * 
- * public final User undeleteUser(long id) throws ResourceNotFoundException {
- * 
- * the user with the ID <code>id</code> will be set as undeleted. This function will
- * be throw a ResourceNotFoundException if a User with the ID <code>id</code> not exists
- * 
- * void removeUser(long id) throws ResourceNotFoundException 
- * 
- * removes the specified user with the ID <code>id</code> from the database permanently
- * This function will be throw a ResourceNotFoundExceiptions if the User with the ID
- * code>ide</code> not eixst.
- * 
- * List<User> findAll() 
- * 
- * get all Users
- * 
- * public Optional<User> findById(long userId) 
- * 
- * get a <code>User</code> with the ID <code>id</code>
- * 
- * Optional<User> findByEmail(String email) 
- * 
- * find a user with the email <code>email</code>
- * 
- * List<User> findByQuery(Query query) 
- * 
- * returns the users defined by the search <code>query</code>
+ * 	User createUser(User creator, User user) 						create a user
+ *  final User updateUser(User updater, Long id, User user) 		update a user
+ *  final User deleteUser(User deleter, long id) 					sets a specified user as deleted
+ *  final User undeleteUser(long id)								sets a specified user as undeleted
+ *  void removeUser(long id)										removes a specified user from the database permanently
+ *  List<User> findAllUsers()										get all Users
+ *  Optional<User> findUserById(long userId)						get a <code>User</code> with the ID <code>id</code>
+ *  List<User> findUserByEmail(String email)						find a user by Email case insensitive
+ *  boolean existsUserByEmail(String email)							exists a user by Email case insensitive
+ *  List<User> findUserByQuery(Query query)							returns the users defined by the search
+ *  existsUserByQuery(Query query)									exists a user by query
  * 
  */
 @Service
 public class UserService {
-
+	
+	private static Logger logger = LogManager.getLogger(CountryService.class);
+	
     private MongoOperations mongoOperations;
 
 	@Autowired
@@ -103,27 +77,20 @@ public class UserService {
 	 * @param 	User creator	 						the creator
 	 * @param 	User user								the user to save
 	 * @return 	User									the created User
-	 * @throws 	ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws ResourceNotFoundException 
 	 * @throws DuplicateException 
-	 * @throw 	ResourceNotFoundException				if a user exist with the email address 
-	 *			NotDefinedException						if the adding user is zero
 	 */	
-	public User createUser(User creator, User user) throws ResourceNotFoundException, NotDefinedException, DuplicateException {
-    	if (user == null)
-    		throw new NotDefinedException("UserService::createUser(" + creator + ", " + user + "): The adding user must not be zero");
+	public User createUser(User creator, User user) throws ResourceNotFoundException, DuplicateException {
+		logger.debug("HserService::createUser(" + creator + ", " + user + ")");
+		
+		Preconditions.checkNotNull(user, "UserService::createUser(" + creator + ", " + user + "): The adding user must not be zero");
     	
-    	if ( creator != null ) {
-    		userRepository.findById(creator.getId())
-    			.orElseThrow(() -> new ResourceNotFoundException("UserService::createUser(" + creator + ", " + user + "): Creator not found with the id :: " + creator.getId()));
-    	}
+    	if ( creator != null && !userRepository.existsById(creator.getId()) ) 
+    		throw new ResourceNotFoundException("UserService::createUser(" + creator + ", " + user + "): Creator not found with the id :: " + creator.getId());
 
     	// This is an alternative solution, as @Indexed(unique=true) from the Email field does not seem to work.
-    	List<User> userExists = this.findUserByEmail(user.getEmail());
-    	
-    	if ( userExists.size() > 0 ) {
+    	if ( existsUserByEmail(user.getEmail()) )
     		throw new DuplicateException("UserService::createUser(" + creator + ", " + user + "): EMail (" + user.getEmail() +  ") allready exists");
-    	}
     	
     	user.setId(sequenceGeneratorService.generateSequence(User.SEQUENCE_NAME));
     	user.setCreatedBy(creator);
@@ -149,17 +116,16 @@ public class UserService {
      * @throws DuplicateException 
      */
     public final User updateUser(User updater, Long id, User user) throws ResourceNotFoundException, NotDefinedException, DuplicateException {
-       	if (updater == null)
-    		throw new NotDefinedException("UserService::updateUser(User updater: " + updater + ", Long id: " + id + ", User user: " + user + "): The updater user must not be zero");
-       	
-       	if (user == null)
-    		throw new NotDefinedException("UserService::updateUser(User updater: " + updater + ", Long id: " + id + ", User user: " + user + "): The user to be updated must not be null");
+    	logger.debug("HserService::updateUser(" + updater + ", " + id + ", " + user + ")");
     	
+    	Preconditions.checkNotNull(updater, "UserService::updateUser(User updater: " + updater + ", Long id: " + id + ", User user: " + user + "): The updater user must not be zero");
+		Preconditions.checkNotNull(user, "UserService::updateUser(User updater: " + updater + ", Long id: " + id + ", User user: " + user + "): The user to be updated must not be null");
+
+        if ( !userRepository.existsById(updater.getId()) )
+    		throw new ResourceNotFoundException("UserService::updateUser(User updater: " + updater + ", Long id: " + id + ", User user: " + user + "): Updater not found for this id :: " + updater.getId());
+		
         User foundUser = userRepository.findById(id)
         		.orElseThrow(() -> new ResourceNotFoundException("UserService::updateUser(User updater: " + updater + ", Long id: " + id + ", User user: " + user + "): User not found for this id :: " + id));
-        
-        User foundUpdater = userRepository.findById(updater.getId())
-        		.orElseThrow(() -> new ResourceNotFoundException("UserService::updateUser(User updater: " + updater + ", Long id: " + id + ", User user: " + user + "): Updater not found for this id :: " + updater.getId()));
 
         // find a user with not id but with the email user
     	List<User> userExists = this.findUserByEmail(user.getEmail());
@@ -168,7 +134,7 @@ public class UserService {
     		throw new DuplicateException("UserService::updateUser(User updater: " + updater + ", Long id: " + id + ", User user: " + user + "): Email already exists");
     	}
         
-        foundUser.setUpdatedBy(foundUpdater);
+        foundUser.setUpdatedBy(updater);
         foundUser.setUpdatedAt(LocalDateTime.now());
         foundUser.setFirstname(user.getFirstname());
         foundUser.setLastname(user.getLastname());
@@ -196,16 +162,17 @@ public class UserService {
      *      	NotDefinedException				if the updater or the user is zero
      */
     public final User deleteUser(User deleter, long id) throws ResourceNotFoundException, NotDefinedException  {
-       	if (deleter == null)
-    		throw new NotDefinedException("UserService::deleteUser(User deleter: " + deleter + ", long id: " + id + "): The deleter user must not be zero");
+    	logger.debug("HserService::deleteUser(" + deleter + ", " + id + ")");
 
-        User foundDeleter = userRepository.findById(deleter.getId())
-        		.orElseThrow(() -> new ResourceNotFoundException("UserService::deleteUser(User deleter: " + deleter + ", long id: " + id + "): The deleter not found"));
-       	
+    	Preconditions.checkNotNull(deleter, "UserService::deleteUser(User deleter: " + deleter + ", long id: " + id + "): The deleter user must not be zero");
+
+    	if ( !userRepository.existsById(deleter.getId()) ) 
+    		throw new ResourceNotFoundException("UserService::deleteUser(User deleter: " + deleter + ", long id: " + id + "): The deleter not found");
+    	
         User user = userRepository.findById(id)
         		.orElseThrow(() -> new ResourceNotFoundException("UserService::deleteUser(User deleter: " + deleter + ", long id: " + id + "): The user not found with the ID: " + id));
         
-        user.setDeletedBy(foundDeleter);
+        user.setDeletedBy(deleter);
         user.setDeletedAt(LocalDateTime.now());
         
         return userRepository.save(user);
@@ -220,6 +187,7 @@ public class UserService {
      *      	IllegalArgumentException		if the updater or the user is zero
      */
     public final User undeleteUser(long id) throws ResourceNotFoundException {
+    	logger.debug("HserService::undeleteUser(" + id + ")");
     	
         User user = userRepository.findById(id)
         		.orElseThrow(() -> new ResourceNotFoundException("UserService::undeleteUser(long id: " + id + "): User not found for this id :: " + id));
@@ -237,7 +205,10 @@ public class UserService {
      * @return void
      * @throws ResourceNotFoundException
      */
+    @Transactional
     public void removeUser(long id) throws ResourceNotFoundException {
+    	logger.debug("HserService::removeUser(" + id + ")");
+
         User user = userRepository.findById(id)
         		.orElseThrow(() -> new ResourceNotFoundException("UserService::removeUser(" + id + "): User not found for this id"));
         
@@ -250,6 +221,8 @@ public class UserService {
      * @return List<User>
      */
     public List<User> findAllUsers() {
+    	logger.debug("HserService::findAllUsers()");
+
         return userRepository.findAll();
     }
 
@@ -260,6 +233,8 @@ public class UserService {
      * @return Optional<User>
      */
     public Optional<User> findUserById(long userId) {
+    	logger.debug("HserService::findUserById(" + userId + ")");
+
     	return userRepository.findById(userId);
     }
 	    
@@ -270,33 +245,57 @@ public class UserService {
      * @return List<User>									the found users
      */
     public List<User> findUserByEmail(String email) {
+    	logger.debug("HserService::findUserByEmail(" + email + ")");
+
     	Criteria regex = Criteria.where("email").regex(
-    			Pattern.compile(email, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)   			
+    			Pattern.compile("\\b" + email + "\\b", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)   			
     			);
     	
     	Query query = new Query().addCriteria(regex);
     	
     	return mongoOperations.find(query, User.class);
     }
-	    
+
+    /**
+     * exists a user by Email case insensitive
+     * 
+     * @param String email								the email to found
+     * @return boolean									
+     */
+    public boolean existsUserByEmail(String email) {
+    	logger.debug("HserService::existsUserByEmail(" + email + ")");
+
+    	Criteria regex = Criteria.where("email").regex(
+    			Pattern.compile("\\b" + email + "\\b", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)   			
+    			);
+    	
+    	Query query = new Query().addCriteria(regex);
+    	
+    	return mongoOperations.exists(query, User.class);
+    }
+    
     /**
      * returns the users defined by the search
      * 
      * @param Query query									the search 
      * @return List<User>									the found users
      */
-    public List<User> findByQuery(Query query) {
-    	// e.g.
-    	//
-    	// Query query = new Query();
-    	// query.addCriteria(Criteria.where('email').is("...");
-    	//
-    	// List<User> users = userService.findByQuery(query);
-    	//
-    	// Criteria regex = Criteria.where("email").regex("", "i");
-    	// mongoOperations.find(new Query().addCriteria(regex), User.class);
-    	//
+    public List<User> findUserByQuery(Query query) {
+    	logger.debug("HserService::findUserByQuery(" + query + ")");
+
     	return mongoOperations.find(query, User.class);
+    }
+
+    /**
+     * exists a user by query
+     * 
+     * @param Query query								the search 
+     * @return boolean									the found users
+     */
+    public boolean existsUserByQuery(Query query) {
+    	logger.debug("HserService::existsByQuery(" + query + ")");
+
+    	return mongoOperations.exists(query, User.class);
     }
     
     /**

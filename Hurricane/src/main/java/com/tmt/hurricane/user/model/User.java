@@ -3,8 +3,8 @@ package com.tmt.hurricane.user.model;
  * Hurrican
  *-------------------------------------------------------------------------------
  * @author    	Thomas Meyer
- * @copyright 	Copyright (C) 2020 Thomas Meyer. License see license.txt
- * @version		0.0.1
+ * @copyright 	Copyright (C) 2022 Thomas Meyer. License see license.txt
+ * @version		0.1.4
  --------------------------------------------------------------------------------*/
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -124,7 +125,7 @@ public class User {
     private boolean blocked;														// if the user blocked?
     private boolean enabled;														// if the user registred
     
-    private String pictogram;														// the pictogram of the user
+    private Binary pictogram;														// the pictogram of the user
 
     private List<Communication> communications = new ArrayList<Communication>();	// the communications
 
@@ -253,11 +254,11 @@ public class User {
 		this.enabled = enabled;
 	}
 
-	public String getPictogram() {
+	public Binary getPictogram() {
 		return pictogram;
 	}
 
-	public void setPictogram(String pictogram) {
+	public void setPictogram(Binary pictogram) {
 		this.pictogram = pictogram;
 	}
 

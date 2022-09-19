@@ -3,15 +3,16 @@ package com.tmt.hurricane.helper.file;
  * Hurrican
  *-------------------------------------------------------------------------------
  * @author    	Thomas Meyer
- * @copyright 	Copyright (C) 2020 Thomas Meyer. License see license.txt
+ * @copyright 	Copyright (C) 2022 Thomas Meyer. License see license.txt
  * @package     database
- * @version		0.1.3
+ * @version		0.1.4
  --------------------------------------------------------------------------------*/
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.apache.commons.io.filefilter.WildcardFileFilter;
-
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
 
 import com.tmt.hurricane.exceptions.NotDefinedException;
@@ -25,10 +26,11 @@ public class FileUtils {
 	 * return the file to the resource directory
 	 * 
 	 * @return File
-	 * @throws FileNotFoundException 
+	 * @throws IOException 
 	 */
-	static final File getResourceDirectory() throws FileNotFoundException {
-		return ResourceUtils.getFile("classpath:application.properties");		
+	public static final File getResourceDirectory() throws IOException {
+		return new ClassPathResource("").getFile();
+//		return ResourceUtils.getFile("classpath:");		
 	}
 
 	/**
@@ -41,7 +43,7 @@ public class FileUtils {
 	 * @throws NotDefinedException 
 	 * @throws FileNotFoundException 
 	 */
-	static final String[]  getMatchedFilesFromDirecotry(File directory, String wildcard) throws NotDefinedException {
+	public static final String[]  getMatchedFilesFromDirecotry(File directory, String wildcard) throws NotDefinedException {
 		if ( directory == null )
 			throw new NotDefinedException("FileUtils::getMatchedFiles(" + directory + "): Not defined file");
 		 

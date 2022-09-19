@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
  * Hurrican
  *-------------------------------------------------------------------------------
  * @author    	Thomas Meyer
- * @copyright 	Copyright (C) 2020 Thomas Meyer. License see license.txt
+ * @copyright 	Copyright (C) 2022 Thomas Meyer. License see license.txt
  * @package		usermanagement
- * @version		0.0.1
+ * @version		0.1.4
  --------------------------------------------------------------------------------*/
 import java.time.LocalTime;
 import java.util.Objects;

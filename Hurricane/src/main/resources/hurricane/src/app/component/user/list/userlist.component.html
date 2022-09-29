@@ -1,0 +1,84 @@
+
+<div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="font-weight-bold">User List (<span class="font-weight-normal">{{ users.length }}</span>)</div>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                      </div>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link disabled" href="#">Disabled</a>
+                    </li>
+                  </ul>
+                  <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                  </form>
+                </div>
+              </nav>
+
+          <div class="alert alert-success" *ngIf="message">
+            {{ message }}
+          </div>
+
+          <div class="table-responsive">
+            <table class="table align-middle text-nowrap">
+                <thead>
+                    <tr>
+                        <th class="text-dark font-medium fs-4">ID</th>
+                        <th class="text-dark font-medium fs-4">Firstname</th>
+                        <th class="text-dark font-medium fs-4">Lastname</th>
+                        <th class="text-dark font-medium fs-4">Email</th>
+                        <th class="text-dark font-medium fs-4">blocked</th>
+                        <th class="text-dark font-medium fs-4">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let user of users'>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.firstname }}</td>
+                        <td>{{ user.lastname }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.blocked }}</td>
+                        <td>
+                          <button (click)="deleteUser(user.id)" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Delete">
+                            <span id="boot-icon" class="bi bi-trash-fill" style="font-size: 20; color: rgb(0, 0, 0); margin:-5px"></span>
+                          </button>
+
+                          <button (click)="editUser(user.id)" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Edit">
+                            <span id="boot-icon" class="bi bi-pencil-fill" style="font-size: 20; color: rgb(0, 0, 0); margin:-5px"></span>
+                          </button>
+
+                        </td>
+                    </tr>              
+                </tbody>
+            </table>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.tmt.hurricane.exceptions.DuplicateException;
-import com.tmt.hurricane.exceptions.NotDefinedException;
 import com.tmt.hurricane.exceptions.ResourceNotFoundException;
 import com.tmt.hurricane.user.model.User;
 
@@ -25,19 +24,19 @@ import com.tmt.hurricane.user.model.User;
  * 
  * void testCreateUserWithMinimalistValidData()										test create User with minimalst valid data
  * void testCreateUserWithCreator() 												test create User with creator 
- * void testCreateUserWithNullUserData()											test create User with null user data should throw NotDefinedException  
+ * void testCreateUserWithNullUserData()											test create User with null user data should throw NullPointerException 
  * void testCreateUserWithNotExistsCreatorShouldThrowResourceNotFound() 			test create User with not exists create should throw RessourceNotFound  
  * void testCreateUserWithDuplicatedEmailAdressShouldThrowResourNotFound()			test create User with duplicated email adress should throw RessourceNotFound  
  * 
  * void testUpdateUserWithValidData() 												test update User with valid data
- * void testUpdateUserWithNullUpdaterShouldThrowNotDefinedException() 				test update User with null Updater should throw NotDefinedException
- * void testUpdateUserWithNullNewUserDataShouldThrowNotDefinedException() 			test update User with null new user daata should throw NotDefinedException
+ * void testUpdateUserWithNullUpdaterShouldThrowNullPointerException() 				test update User with null Updater should throw NullPointerException
+ * void testUpdateUserWithNullNewUserDataShouldThrowNullPointerException() 			test update User with null new user data should throw NullPointerException
  * void testUpdateUserWithNotExistsUserShouldThrowResourceNotFoundException() 		test update User with not exists user should throw ResourceNotFoundException
  * void testUpdateUserWithNotExistsCreatorShouldThrowResourceNotFoundException() 	test update User with not exists creater should throw ResourceNotFoundException
  * void testUpdateUserWithExistsUserDataEmailShouldThrowDuplicateException() 		test update User with exists user data email throw DuplicateException
  * 
  * void testValidDeleteUser() 														test valid delete user
- * void testDeleteUserWithNullDeleterShouldThrowNotDefinedException() 				test Delete user with null deleter should throw NotDefinedException
+ * void testDeleteUserWithNullDeleterShouldThrowNullPointerException() 				test Delete user with null deleter should throw NullPointerException
  * void testDeleteUserWithNotExistsDeleterShouldThrowResourceNotFoundException() 	test Delete user with not exists deleter should throw ResourceNotFoundException
  * void testDeleteUserWithNotExistsUserIDShouldThrowResourceNotFoundException() 	test Delete user with not exists user id should throw ResourceNotFoundException
  * 
@@ -62,11 +61,11 @@ class UserServiceTest {
 	/**
 	 * test create User with minimalst valid data
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */	
 	@Test
-	void testCreateUserWithMinimalistValidData() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testCreateUserWithMinimalistValidData() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		String firstname = "firstname";
 		String lastname = "lastname";
 		String email = "email@email.com";
@@ -102,11 +101,11 @@ class UserServiceTest {
 	/**
 	 * test create User with creator 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */	
 	@Test
-	void testCreateUserWithCreator() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testCreateUserWithCreator() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// store creator
 		String creatorFirstname = "firstname";
 		String creatorLastname = "lastname";
@@ -160,22 +159,22 @@ class UserServiceTest {
 	}
 	
 	/**
-	 * test create User with null user data should throw NotDefinedException  
+	 * test create User with null user data should throw NullPointerException  
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 */	
 	@Test
-	void testCreateUserWithNullUserData() throws ResourceNotFoundException, NotDefinedException {
-		assertThrows(NullPointerException.class, () -> userService.createUser(null, null), "testCreateUserWithNullUserData(): Create User with null user data didn't throw NotDefinedException");
+	void testCreateUserWithNullUserData() throws ResourceNotFoundException, NullPointerException {
+		assertThrows(NullPointerException.class, () -> userService.createUser(null, null), "testCreateUserWithNullUserData(): Create User with null user data didn't throw NullPointerException");
 	}
 	
 	/**
 	 * test create User with not exists create should throw RessourceNotFound  
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 */
 	@Test
-	void testCreateUserWithNotExistsCreatorShouldThrowResourceNotFound() throws ResourceNotFoundException, NotDefinedException {
+	void testCreateUserWithNotExistsCreatorShouldThrowResourceNotFound() throws ResourceNotFoundException, NullPointerException {
 		// not exists creator
 		String notExistsCreatorFirstname = "fake user firstname";
 		String notExistsCreatorLastname = "fake user lastname";
@@ -211,7 +210,7 @@ class UserServiceTest {
 	 * @throws DuplicateException 
 	 */	
 	@Test
-	void testCreateUserWithDuplicatedEmailAdressShouldThrowResourceNotFound() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testCreateUserWithDuplicatedEmailAdressShouldThrowResourceNotFound() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// store creator
 		String creatorFirstname = "firstname";
 		String creatorLastname = "lastname";
@@ -274,11 +273,11 @@ class UserServiceTest {
 	 * test update User with valid data
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */
 	@Test
-	void testUpdateUserWithValidData() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testUpdateUserWithValidData() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";
@@ -351,14 +350,14 @@ class UserServiceTest {
 	}
 	
 	/**
-	 * test update User with null Updater should throw NotDefinedException
+	 * test update User with null Updater should throw NullPointerException
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */
 	@Test
-	void testUpdateUserWithNullUpdaterShouldThrowNotDefinedException() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testUpdateUserWithNullUpdaterShouldThrowNullPointerException() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";
@@ -375,7 +374,7 @@ class UserServiceTest {
 		User createdUser = userService.createUser(null, user);
 		Optional<User> foundUser = userService.findUserById(createdUser.getId());
 		
-		assertTrue( foundUser.isPresent(), "testUpdateUserWithNullUpdaterShouldThrowNotDefinedException(): User (" + user + ") not stored");
+		assertTrue( foundUser.isPresent(), "testUpdateUserWithNullUpdaterShouldThrowNullPointerException(): User (" + user + ") not stored");
 
 		// update user
 		String updatedFirstname = "updated firstname";
@@ -390,21 +389,21 @@ class UserServiceTest {
 				updatedPassword					// password
 		);
 
-		assertThrows(NullPointerException.class, () -> userService.updateUser(null, foundUser.get().getId(), updatedUserData), "testUpdateUserWithNullUpdaterShouldThrowNotDefinedException(): A NotDefineException was not thrown when Creater is null");
+		assertThrows(NullPointerException.class, () -> userService.updateUser(null, foundUser.get().getId(), updatedUserData), "testUpdateUserWithNullUpdaterShouldThrowNullPointerException(): A NotDefineException was not thrown when Creater is null");
 		
 		// clean up
 		userService.removeUser(foundUser.get().getId());		
 	}
 	
 	/**
-	 * test update User with null new user daata should throw NotDefinedException
+	 * test update User with null new user daata should throw NullPointerException
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */
 	@Test
-	void testUpdateUserWithNullNewUserDataShouldThrowNotDefinedException() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testUpdateUserWithNullNewUserDataShouldThrowNullPointerException() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";
@@ -421,7 +420,7 @@ class UserServiceTest {
 		User createdUser = userService.createUser(null, user);
 		Optional<User> foundUser = userService.findUserById(createdUser.getId());
 		
-		assertTrue( foundUser.isPresent(), "testUpdateUserWithNullNewUserDataShouldThrowNotDefinedException(): User (" + user + ") not stored");
+		assertTrue( foundUser.isPresent(), "testUpdateUserWithNullNewUserDataShouldThrowNullPointerException(): User (" + user + ") not stored");
 
 		// create updater
 		String creator_firstname = "creator firstname";
@@ -439,10 +438,10 @@ class UserServiceTest {
 		User creatorUser = userService.createUser(null, creator);
 		Optional<User> foundCreator = userService.findUserById(creatorUser.getId());
 		
-		assertTrue( foundCreator.isPresent(), "testUpdateUserWithNullNewUserDataShouldThrowNotDefinedException(): Creator (" + creator + ") not stored");
+		assertTrue( foundCreator.isPresent(), "testUpdateUserWithNullNewUserDataShouldThrowNullPointerException(): Creator (" + creator + ") not stored");
 		
 		// update user
-		assertThrows(NullPointerException.class, () -> userService.updateUser(foundCreator.get(), foundUser.get().getId(), null), "testUpdateUserWithNullNewUserDataShouldThrowNotDefinedException(): A NotDefineException was not thrown when user data is null");
+		assertThrows(NullPointerException.class, () -> userService.updateUser(foundCreator.get(), foundUser.get().getId(), null), "testUpdateUserWithNullNewUserDataShouldThrowNullPointerException(): A NotDefineException was not thrown when user data is null");
 		
 		// clean up
 		userService.removeUser(foundCreator.get().getId());
@@ -453,11 +452,11 @@ class UserServiceTest {
 	 * test update User with not exists user should throw ResourceNotFoundException
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */	
 	@Test
-	void testUpdateUserWithNotExistsUserShouldThrowResourceNotFoundException() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testUpdateUserWithNotExistsUserShouldThrowResourceNotFoundException() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";
@@ -526,11 +525,11 @@ class UserServiceTest {
 	 * test update User with not exists creater should throw ResourceNotFoundException
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */	
 	@Test
-	void testUpdateUserWithNotExistsCreatorShouldThrowResourceNotFoundException() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testUpdateUserWithNotExistsCreatorShouldThrowResourceNotFoundException() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";
@@ -599,11 +598,11 @@ class UserServiceTest {
 	 * test update User with exists user data email throw DuplicateException
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */	
 	@Test
-	void testUpdateUserWithExistsUserDataEmailShouldThrowDuplicateException() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testUpdateUserWithExistsUserDataEmailShouldThrowDuplicateException() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname1 = "firstname";
 		String lastname1 = "lastname";
@@ -684,11 +683,11 @@ class UserServiceTest {
 	 * test valid delete user
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */	
 	@Test
-	void testValidDeleteUser() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testValidDeleteUser() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";
@@ -747,14 +746,14 @@ class UserServiceTest {
 	}
 	
 	/**
-	 * test Delete user with null deleter should throw NotDefinedException
+	 * test Delete user with null deleter should throw NullPointerException
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */
 	@Test
-	void testDeleteUserWithNullDeleterShouldThrowNotDefinedException() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testDeleteUserWithNullDeleterShouldThrowNullPointerException() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";
@@ -771,10 +770,10 @@ class UserServiceTest {
 		User createdUser = userService.createUser(null, user);
 		Optional<User> foundUser = userService.findUserById(createdUser.getId());
 		
-		assertTrue( foundUser.isPresent(), "testDeleteUserWithNullDeleterShouldThrowNotDefinedException(): User (" + user + ") not stored");
+		assertTrue( foundUser.isPresent(), "testDeleteUserWithNullDeleterShouldThrowNullPointerException(): User (" + user + ") not stored");
 
 		// test
-		assertThrows(NullPointerException.class, () -> userService.deleteUser(null, foundUser.get().getId()), "testDeleteUserWithNullDeleterShouldThrowNotDefinedException(): A NotDefinedException was not thrown when deleter ist null");
+		assertThrows(NullPointerException.class, () -> userService.deleteUser(null, foundUser.get().getId()), "testDeleteUserWithNullDeleterShouldThrowNullPointerException(): A NullPointerException was not thrown when deleter ist null");
 
 		// clean up
 		userService.removeUser(foundUser.get().getId());		
@@ -784,11 +783,11 @@ class UserServiceTest {
 	 * test Delete user with not exists deleter should throw ResourceNotFoundException
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */
 	@Test
-	void testDeleteUserWithNotExistsDeleterShouldThrowResourceNotFoundException() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testDeleteUserWithNotExistsDeleterShouldThrowResourceNotFoundException() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";
@@ -843,11 +842,11 @@ class UserServiceTest {
 	 * test Delete user with not exists user id should throw ResourceNotFoundException
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */
 	@Test
-	void testDeleteUserWithNotExistsUserIDShouldThrowResourceNotFoundException() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testDeleteUserWithNotExistsUserIDShouldThrowResourceNotFoundException() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";
@@ -897,11 +896,11 @@ class UserServiceTest {
 	 * test valid undelete user
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */	
 	@Test
-	void testValidUndeleteUser() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testValidUndeleteUser() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";
@@ -966,11 +965,11 @@ class UserServiceTest {
 	 * test undelete user with invalid Index Should Throw ResourceNotFound
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */	
 	@Test
-	void testUndeleteUserWithInvalidIndexShouldThrowResourceNotFound() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testUndeleteUserWithInvalidIndexShouldThrowResourceNotFound() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";
@@ -1022,11 +1021,11 @@ class UserServiceTest {
 	 * test removed user with invalid index should throw ResourceNotFoundException
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */	
 	@Test
-	void testRemovedUserWithInvalidIndexShouldThrowResourceNotFoundException() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testRemovedUserWithInvalidIndexShouldThrowResourceNotFoundException() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";
@@ -1056,7 +1055,7 @@ class UserServiceTest {
 	 * test remove user and loading data
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */	
 	@Test
@@ -1109,7 +1108,7 @@ class UserServiceTest {
 	
 /*	
 	@Test
-	void testRemoveUserAndLoadingData() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testRemoveUserAndLoadingData() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user 
 		String creator_firstname = "creators firstname";
 		String creator_lastname = "creators lastname";
@@ -1164,11 +1163,11 @@ class UserServiceTest {
 	 * test findUserByEmail 
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */	
 	@Test
-	void testFindUserByEmail() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testFindUserByEmail() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";
@@ -1237,11 +1236,11 @@ class UserServiceTest {
 	 * test find not a user by wrong email 
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */	
 	@Test
-	void testFindNotAUserByWrongEmail() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testFindNotAUserByWrongEmail() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";
@@ -1274,11 +1273,11 @@ class UserServiceTest {
 	 * test existsUserByEmail 
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */	
 	@Test
-	void testExistsUserByEmail() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testExistsUserByEmail() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";
@@ -1347,12 +1346,12 @@ class UserServiceTest {
 	 * test exists not a user by wrong email 
 	 * 
 	 * @throws ResourceNotFoundException 
-	 * @throws NotDefinedException 
+	 * @throws NullPointerException 
 	 * @throws DuplicateException 
 	 */	
 /*	
 	@Test
-	void testExistsNotAUserByWrongEmail() throws ResourceNotFoundException, NotDefinedException, DuplicateException {
+	void testExistsNotAUserByWrongEmail() throws ResourceNotFoundException, NullPointerException, DuplicateException {
 		// create user
 		String firstname = "firstname";
 		String lastname = "lastname";

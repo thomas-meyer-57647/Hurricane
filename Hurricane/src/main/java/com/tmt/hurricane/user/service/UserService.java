@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.base.Preconditions;
 import com.tmt.hurricane.country.service.CountryService;
 import com.tmt.hurricane.exceptions.DuplicateException;
-import com.tmt.hurricane.exceptions.NotDefinedException;
 import com.tmt.hurricane.exceptions.ResourceNotFoundException;
 import com.tmt.hurricane.helper.database.service.SequenceGeneratorService;
 import com.tmt.hurricane.services.field.FieldService;
@@ -81,7 +80,7 @@ public class UserService {
 	 * @throws DuplicateException 
 	 */	
 	public User createUser(User creator, User user) throws ResourceNotFoundException, DuplicateException {
-		logger.debug("HserService::createUser(" + creator + ", " + user + ")");
+		logger.debug("UserService::createUser(" + creator + ", " + user + ")");
 		
 		Preconditions.checkNotNull(user, "UserService::createUser(" + creator + ", " + user + "): The adding user must not be zero");
     	
@@ -111,12 +110,11 @@ public class UserService {
      * @param 	User user								The user to be updated
      * @return 	User									the updated User
      * @throws	ResourceNotFoundException				if no User found with the <code>userID</code>
-     *			NotDefinedException						if the updater or the user is zero 
-     * @throws NotDefinedException 
-     * @throws DuplicateException 
+     * @throws	NullPointerException					if the updater or the user is zero 
+     * @throws  DuplicateException 
      */
-    public final User updateUser(User updater, Long id, User user) throws ResourceNotFoundException, NotDefinedException, DuplicateException {
-    	logger.debug("HserService::updateUser(" + updater + ", " + id + ", " + user + ")");
+    public final User updateUser(User updater, Long id, User user) throws ResourceNotFoundException, DuplicateException {
+    	logger.debug("UserService::updateUser(" + updater + ", " + id + ", " + user + ")");
     	
     	Preconditions.checkNotNull(updater, "UserService::updateUser(User updater: " + updater + ", Long id: " + id + ", User user: " + user + "): The updater user must not be zero");
 		Preconditions.checkNotNull(user, "UserService::updateUser(User updater: " + updater + ", Long id: " + id + ", User user: " + user + "): The user to be updated must not be null");
@@ -159,10 +157,10 @@ public class UserService {
      * @param 	id								the ID of the user who should be set as deleted
      * @return 	void
      * @throws 	ResourceNotFoundException
-     *      	NotDefinedException				if the updater or the user is zero
+     *      	NullPointerException			if the updater or the user is null
      */
-    public final User deleteUser(User deleter, long id) throws ResourceNotFoundException, NotDefinedException  {
-    	logger.debug("HserService::deleteUser(" + deleter + ", " + id + ")");
+    public final User deleteUser(User deleter, long id) throws ResourceNotFoundException  {
+    	logger.debug("UserService::deleteUser(" + deleter + ", " + id + ")");
 
     	Preconditions.checkNotNull(deleter, "UserService::deleteUser(User deleter: " + deleter + ", long id: " + id + "): The deleter user must not be zero");
 
@@ -187,7 +185,7 @@ public class UserService {
      *      	IllegalArgumentException		if the updater or the user is zero
      */
     public final User undeleteUser(long id) throws ResourceNotFoundException {
-    	logger.debug("HserService::undeleteUser(" + id + ")");
+    	logger.debug("UserService::undeleteUser(" + id + ")");
     	
         User user = userRepository.findById(id)
         		.orElseThrow(() -> new ResourceNotFoundException("UserService::undeleteUser(long id: " + id + "): User not found for this id :: " + id));
@@ -207,7 +205,7 @@ public class UserService {
      */
     @Transactional
     public void removeUser(long id) throws ResourceNotFoundException {
-    	logger.debug("HserService::removeUser(" + id + ")");
+    	logger.debug("UserService::removeUser(" + id + ")");
 
         User user = userRepository.findById(id)
         		.orElseThrow(() -> new ResourceNotFoundException("UserService::removeUser(" + id + "): User not found for this id"));
@@ -221,7 +219,7 @@ public class UserService {
      * @return List<User>
      */
     public List<User> findAllUsers() {
-    	logger.debug("HserService::findAllUsers()");
+    	logger.debug("UserService::findAllUsers()");
 
         return userRepository.findAll();
     }
@@ -233,7 +231,7 @@ public class UserService {
      * @return Optional<User>
      */
     public Optional<User> findUserById(long userId) {
-    	logger.debug("HserService::findUserById(" + userId + ")");
+    	logger.debug("UserService::findUserById(" + userId + ")");
 
     	return userRepository.findById(userId);
     }
@@ -245,7 +243,7 @@ public class UserService {
      * @return List<User>									the found users
      */
     public List<User> findUserByEmail(String email) {
-    	logger.debug("HserService::findUserByEmail(" + email + ")");
+    	logger.debug("UserService::findUserByEmail(" + email + ")");
 
     	Criteria regex = Criteria.where("email").regex(
     			Pattern.compile("\\b" + email + "\\b", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)   			
@@ -263,7 +261,7 @@ public class UserService {
      * @return boolean									
      */
     public boolean existsUserByEmail(String email) {
-    	logger.debug("HserService::existsUserByEmail(" + email + ")");
+    	logger.debug("UserService::existsUserByEmail(" + email + ")");
 
     	Criteria regex = Criteria.where("email").regex(
     			Pattern.compile("\\b" + email + "\\b", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)   			
@@ -281,7 +279,7 @@ public class UserService {
      * @return List<User>									the found users
      */
     public List<User> findUserByQuery(Query query) {
-    	logger.debug("HserService::findUserByQuery(" + query + ")");
+    	logger.debug("UserService::findUserByQuery(" + query + ")");
 
     	return mongoOperations.find(query, User.class);
     }
@@ -293,7 +291,7 @@ public class UserService {
      * @return boolean									the found users
      */
     public boolean existsUserByQuery(Query query) {
-    	logger.debug("HserService::existsByQuery(" + query + ")");
+    	logger.debug("UserService::existsByQuery(" + query + ")");
 
     	return mongoOperations.exists(query, User.class);
     }

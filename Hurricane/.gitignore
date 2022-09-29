@@ -4,6 +4,49 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+!target/hurricane
+
+### Angular ####
+# Compiled output
+target/hurricane/dist
+target/hurricane/tmp
+target/hurricane/out-tsc
+target/hurricane/bazel-out
+
+# Node
+target/hurricane/node_modules
+target/hurricane/npm-debug.log
+target/hurricane/yarn-error.log
+
+# IDEs and editors
+target/hurricane/.idea/
+target/hurricane/.project
+target/hurricane/.classpath
+target/hurricane/.c9/
+target/hurricane/*.launch
+target/hurricane/.settings/
+target/hurricane/*.sublime-workspace
+
+# Visual Studio Code
+target/hurricane/.vscode/*
+!target/hurricane/.vscode/settings.json
+!target/hurricane/.vscode/tasks.json
+!target/hurricane/.vscode/launch.json
+!target/hurricane/.vscode/extensions.json
+target/hurricane/.history/*
+
+# Miscellaneous
+target/hurricane//.angular/cache
+target/hurricane/.sass-cache/
+target/hurricane//connect.lock
+target/hurricane//coverage
+target/hurricane//libpeerconnection.log
+target/hurricane/testem.log
+target/hurricane//typings
+
+# System files
+target/hurricane/.DS_Store
+target/hurricane/Thumbs.db
 
 ### VISUAL PARADIGM ###
 doc/*.vpp.*
@@ -34,4 +77,4 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
-.vscode/
+**/.vscode/
